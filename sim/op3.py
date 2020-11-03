@@ -1,8 +1,9 @@
 import time
 from threading import Thread
+import numpy as np
 
-import pybullet_data
 import pybullet as p
+import pybullet_data
 
 op3_joints = ['l_hip_yaw',
               'l_hip_roll',
@@ -25,27 +26,46 @@ op3_joints = ['l_hip_yaw',
               'head_pan',
               'head_tilt']
 
+
 class OP3:
     def __init__(self):
         self.physicsClient = p.connect(p.GUI)  # or p.DIRECT for non-graphical version
-        p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
+        # p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
+        self.bt_rst = p.addUserDebugParameter("reset OP3", 1, 0, 1)
+        p.configureDebugVisualizer(p.COV_ENABLE_RGB_BUFFER_PREVIEW, 0)
+        p.configureDebugVisualizer(p.COV_ENABLE_DEPTH_BUFFER_PREVIEW, 0)
+        p.configureDebugVisualizer(p.COV_ENABLE_SEGMENTATION_MARK_PREVIEW, 0)
+
         p.setAdditionalSearchPath(pybullet_data.getDataPath())  # optionally
         p.setGravity(0, 0, -9.8)
-        op3StartPos = [0, 0, 1]
-        op3StartOrientation = p.getQuaternionFromEuler([0, 0, 0])
+        self.op3StartPos = [0, 0, 0.3]
+        self.op3StartOrientation = p.getQuaternionFromEuler([0, 0, 0])
         self.planeId = p.loadURDF("plane.urdf")
-        self.robot = p.loadURDF("../models/robotis_op3.urdf", op3StartPos, op3StartOrientation)
+        self.robot = p.loadURDF("../models/robotis_op3.urdf", self.op3StartPos, self.op3StartOrientation)
         self.numJoints = p.getNumJoints(self.robot)
         self.targetVel = 0
         self.maxForce = 100
 
         self.update_angle_th()
+        self.check_reset_th()
         # We go real-time simulation rather than call stepSimulation
         p.setRealTimeSimulation(1)
         self._set_joint()
 
         self.joints = op3_joints
         self.angles = None
+
+    def is_fallen(self):
+        """Decide whether the rex has fallen.
+        If the up directions between the base and the world is large (the dot
+        product is smaller than 0.85), the rex is considered fallen.
+        Returns:
+          Boolean value that indicates whether the rex has fallen.
+        """
+        orientation = self.robot.GetBaseOrientation()
+        rot_mat = p.getMatrixFromQuaternion(orientation)
+        local_up = rot_mat[6:]
+        return np.dot(np.asarray([0, 0, 1]), np.asarray(local_up)) < 0.85
 
     def get_angles(self):
         if self.joints is None: return None
@@ -71,6 +91,18 @@ class OP3:
             self.set_angles(angles)
             time.sleep(0.1)
 
+    def check_reset_th(self):
+        def _cb_reset():
+            self.prev_state = None
+            while True:
+                curr_state = p.readUserDebugParameter(self.bt_rst)
+                if curr_state != self.prev_state:
+                    p.resetBasePositionAndOrientation(self.robot, self.op3StartPos, self.op3StartOrientation)
+                    self.prev_state = curr_state
+                time.sleep(0.001)
+
+        Thread(target=_cb_reset).start()
+
     def update_angle_th(self):
         def _cb_angles():
             while True:
@@ -79,6 +111,7 @@ class OP3:
                     angles.append(p.getJointState(self.robot, joint)[0])
                 self.angles = angles
                 time.sleep(0.001)
+
         Thread(target=_cb_angles).start()
 
     def _set_joint(self):
@@ -90,11 +123,14 @@ class OP3:
         try:
             while True:
                 # p.stepSimulation()
-                time.sleep(1./240.)
+                time.sleep(1. / 240.)
         finally:
             OP3Pos, OP3Orn = p.getBasePositionAndOrientation(self.robot)
             print(OP3Pos, OP3Orn)
             p.disconnect()
+
+    def reset(self):
+        pass
 
 
 def interpolate(anglesa, anglesb, coefa):

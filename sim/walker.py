@@ -1,215 +1,11 @@
 #!/usr/bin/env python
 import time
 from threading import Thread
-import math
+
+import pybullet as p
 
 from op3 import OP3
-
-
-class WJFunc:
-    """
-    Walk Joint Function CPG style
-    Provides parameterized sine wave functions as y=offset+scale*(in_offset+in_scale*x)
-    """
-
-    def __init__(self):
-        self.offset = 0
-        self.scale = 1
-        self.in_offset = 0
-        self.in_scale = 1
-
-    def get(self, x):
-        """ x between 0 and 1"""
-        f = math.sin(self.in_offset + self.in_scale * x)
-        return self.offset + self.scale * f
-
-    def clone(self):
-        z = WJFunc()
-        z.offset = self.offset
-        z.scale = self.scale
-        z.in_offset = self.in_offset
-        z.in_scale = self.in_scale
-        return z
-
-    def mirror(self):
-        z = self.clone()
-        z.offset *= -1
-        z.scale *= -1
-        return z
-
-    def __str__(self):
-        return "y=%f+%f*sin(%f+%f*x)" % (self.offset, self.scale, self.in_offset, self.in_scale)
-
-
-class WFunc:
-    """
-    Multi-joint walk function for Darwin
-    """
-
-    def __init__(self, **kwargs):
-        self.parameters = {}
-
-        self.parameters["swing_scale"] = 0
-        self.parameters["step_scale"] = 0.3
-        self.parameters["step_offset"] = 0.55
-        self.parameters["ankle_offset"] = 0
-        self.parameters["vx_scale"] = 0.5
-        self.parameters["vy_scale"] = 0.5
-        self.parameters["vt_scale"] = 0.4
-
-        for k, v in kwargs.items():
-            self.parameters[k] = v
-
-        self.generate()
-
-    def generate(self):
-        """
-        Build CPG functions for walk-on-spot (no translation or rotation, only legs up/down)
-        """
-        # f1=THIGH1=ANKLE1=L=R in phase
-        self.pfn = {}  # phase joint functions
-        self.afn = {}  # anti phase joint functions
-
-        # ~ print f
-        f1 = WJFunc()
-        f1.in_scale = math.pi
-        f1.scale = -self.parameters["swing_scale"]
-        self.pfn["l_ank_roll"] = f1
-        self.pfn["l_hip_roll"] = f1
-
-        # f2=mirror f1 in antiphase
-        f2 = f1.mirror()
-        # ~ f2=WJFunc()
-        self.afn["l_ank_roll"] = f2
-        self.afn["l_hip_roll"] = f2
-
-        f3 = WJFunc()
-        f3.in_scale = math.pi
-        f3.scale = self.parameters["step_scale"]
-        f3.offset = self.parameters["step_offset"]
-        self.pfn["l_hip_pitch"] = f3
-        f33 = f3.mirror()
-        f33.offset += self.parameters["ankle_offset"]
-        self.pfn["l_ank_pitch"] = f33
-
-        f4 = f3.mirror()
-        f4.offset *= 2
-        f4.scale *= 2
-        self.pfn["l_knee"] = f4
-
-        s2 = 0
-        f5 = f3.clone()
-        f5.in_scale *= 2
-        f5.scale = s2
-        self.afn["l_hip_pitch"] = f5
-
-        f6 = f3.mirror()
-        f6.in_scale *= 2
-        f6.scale = f5.scale
-        f6.offset += self.parameters["ankle_offset"]
-        self.afn["l_ank_pitch"] = f6
-
-        f7 = f4.clone()
-        f7.scale = 0
-        self.afn["l_knee"] = f7
-
-        self.forward = [f5, f6]
-
-        self.generate_right()
-        self.joints = self.pfn.keys()
-
-        self.show()
-
-    def generate_right(self):
-        """
-        Mirror CPG functions from left to right and antiphase right
-        """
-        l = [v[2:] for v in self.pfn.keys()]
-        for j in l:
-            self.pfn["r_" + j] = self.afn["l_" + j].mirror()
-            self.afn["r_" + j] = self.pfn["l_" + j].mirror()
-
-    def get(self, phase, x, velocity):
-        """ Obtain the joint angles for a given phase, position in cycle (x 0,1)) and velocity parameters """
-        angles = {}
-        for j in self.pfn.keys():
-            if phase:
-                v = self.pfn[j].get(x)
-                angles[j] = v
-            else:
-                angles[j] = self.afn[j].get(x)
-        self.apply_velocity(angles, velocity, phase, x)
-        return angles
-
-    def show(self):
-        """
-        Display the CPG functions used
-        """
-        for j in self.pfn.keys():
-            print(j, "p", self.pfn[j], "a", self.afn[j])
-
-    def apply_velocity(self, angles, velocity, phase, x):
-        """ Modify on the walk-on-spot joint angles to apply the velocity vector"""
-
-        # VX
-        v = velocity[0] * self.parameters["vx_scale"]
-        d = (x * 2 - 1) * v
-        if phase:
-            angles["l_hip_pitch"] += d
-            angles["l_ank_pitch"] += d
-            angles["r_hip_pitch"] += d
-            angles["r_ank_pitch"] += d
-        else:
-            angles["l_hip_pitch"] -= d
-            angles["l_ank_pitch"] -= d
-            angles["r_hip_pitch"] -= d
-            angles["r_ank_pitch"] -= d
-
-        # VY
-        v = velocity[1] * self.parameters["vy_scale"]
-        d = (x) * v
-        d2 = (1 - x) * v
-        if v >= 0:
-            if phase:
-                angles["l_hip_roll"] -= d
-                angles["l_ank_roll"] -= d
-                angles["r_hip_roll"] += d
-                angles["r_ank_roll"] += d
-            else:
-                angles["l_hip_roll"] -= d2
-                angles["l_ank_roll"] -= d2
-                angles["r_hip_roll"] += d2
-                angles["r_ank_roll"] += d2
-        else:
-            if phase:
-                angles["l_hip_roll"] += d2
-                angles["l_ank_roll"] += d2
-                angles["r_hip_roll"] -= d2
-                angles["r_ank_roll"] -= d2
-            else:
-                angles["l_hip_roll"] += d
-                angles["l_ank_roll"] += d
-                angles["r_hip_roll"] -= d
-                angles["r_ank_roll"] -= d
-
-        # VT
-        v = velocity[2] * self.parameters["vt_scale"]
-        d = (x) * v
-        d2 = (1 - x) * v
-        if v >= 0:
-            if phase:
-                angles["l_hip_yaw"] = -d
-                angles["r_hip_yaw"] = d
-            else:
-                angles["l_hip_yaw"] = -d2
-                angles["r_hip_yaw"] = d2
-        else:
-            if phase:
-                angles["l_hip_yaw"] = d2
-                angles["r_hip_yaw"] = -d2
-            else:
-                angles["l_hip_yaw"] = d
-                angles["r_hip_yaw"] = -d
+from wfunc import WFunc
 
 
 class Walker:
@@ -223,11 +19,14 @@ class Walker:
 
         self.velocity = [0, 0, 0]
         self.walking = False
-        self.func = WFunc()
+        self.wfunc = WFunc()
 
         # ~ self.ready_pos=get_walk_angles(10)
-        self.ready_pos = self.func.get(True, 0, [0, 0, 0])
-
+        self.ready_pos = self.wfunc.get(True, 0, [0, 0, 0])
+        self.ready_pos.update({"r_sho_pitch": 0, "l_sho_pitch": 0,
+                               "r_sho_roll": -1.0, "l_sho_roll": 1.0,
+                               "r_el": 0.5, "l_el": -0.5})
+        self.sld_interval = p.addUserDebugParameter("step_interval", 0.001, 0.1, 0.01)
         self._th_walk = None
 
     def cmd_vel(self, vx, vy, vt):
@@ -262,11 +61,10 @@ class Walker:
         """
         Main walking loop, smoothly update velocity vectors and apply corresponding angles
         """
-        func = self.func
 
         # Global walk loop
         n = 50
-        p = True
+        phrase = True
         i = 0
         self.current_velocity = [0, 0, 0]
         while self.walking or i < n or self.is_walking():
@@ -274,17 +72,17 @@ class Walker:
                 self.velocity = [0, 0, 0]
             if not self.is_walking() and i == 0:  # Do not move if nothing to do and already at 0
                 self.update_velocity(self.velocity, n)
-                time.sleep(1. / 100.)
+                time.sleep(p.readUserDebugParameter(self.sld_interval))
                 continue
             x = float(i) / n
-            angles = func.get(p, x, self.current_velocity)
+            angles = self.wfunc.get(phrase, x, self.current_velocity)
             self.update_velocity(self.velocity, n)
             self.op3.set_angles(angles)
             i += 1
             if i > n:
                 i = 0
-                p = not p
-            time.sleep(1. / 100.)
+                phrase = not phrase
+            time.sleep(p.readUserDebugParameter(self.sld_interval))
 
         self._th_walk = None
 
