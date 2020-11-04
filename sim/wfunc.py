@@ -35,7 +35,7 @@ class WFunc:
         for k, v in walk_offset.items():
             self.ang_sliders[k] = p.addUserDebugParameter(k, -3, 3, v)
         self.update_param_th()
-        while not self.parameters:
+        while not self.ang_offsets:
             print("wait parameters to propagated")
         for k, v in kwargs.items():
             self.parameters[k] = v

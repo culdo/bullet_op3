@@ -55,6 +55,18 @@ class OP3:
         self.joints = op3_joints
         self.angles = None
 
+    def get_orientation(self):
+        _, orientation = p.getBasePositionAndOrientation(self.robot)
+        return orientation
+
+    def get_position(self):
+        position, _ = p.getBasePositionAndOrientation(self.robot)
+        return position
+
+    def camera_follow(self, distance=1.0, pitch=-20.0, yaw=90.0):
+        lookat = self.get_position()
+        p.resetDebugVisualizerCamera(distance, yaw, pitch, lookat)
+
     def is_fallen(self):
         """Decide whether the rex has fallen.
         If the up directions between the base and the world is large (the dot
@@ -62,8 +74,7 @@ class OP3:
         Returns:
           Boolean value that indicates whether the rex has fallen.
         """
-        orientation = self.robot.GetBaseOrientation()
-        rot_mat = p.getMatrixFromQuaternion(orientation)
+        rot_mat = p.getMatrixFromQuaternion(self.get_orientation())
         local_up = rot_mat[6:]
         return np.dot(np.asarray([0, 0, 1]), np.asarray(local_up)) < 0.85
 
@@ -96,8 +107,8 @@ class OP3:
             self.prev_state = None
             while True:
                 curr_state = p.readUserDebugParameter(self.bt_rst)
-                if curr_state != self.prev_state:
-                    p.resetBasePositionAndOrientation(self.robot, self.op3StartPos, self.op3StartOrientation)
+                if curr_state != self.prev_state or self.is_fallen():
+                    self.reset()
                     self.prev_state = curr_state
                 time.sleep(0.001)
 
@@ -130,7 +141,7 @@ class OP3:
             p.disconnect()
 
     def reset(self):
-        pass
+        p.resetBasePositionAndOrientation(self.robot, self.op3StartPos, self.op3StartOrientation)
 
 
 def interpolate(anglesa, anglesb, coefa):

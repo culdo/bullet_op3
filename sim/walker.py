@@ -4,6 +4,7 @@ from threading import Thread
 
 import pybullet as p
 
+import sys
 from op3 import OP3
 from wfunc import WFunc
 
@@ -26,7 +27,10 @@ class Walker:
         self.ready_pos.update({"r_sho_pitch": 0, "l_sho_pitch": 0,
                                "r_sho_roll": -1.0, "l_sho_roll": 1.0,
                                "r_el": 0.5, "l_el": -0.5})
-        self.sld_interval = p.addUserDebugParameter("step_interval", 0.001, 0.1, 0.01)
+        if sys.platform == "win32":
+            self.sld_interval = p.addUserDebugParameter("step_interval", 0.001, 0.1, 0.01)
+        elif sys.platform == "linux":
+            self.sld_interval = p.addUserDebugParameter("step_interval", 0.001, 0.1, 0.01)
         self._th_walk = None
 
     def cmd_vel(self, vx, vy, vt):
@@ -83,6 +87,7 @@ class Walker:
                 i = 0
                 phrase = not phrase
             time.sleep(p.readUserDebugParameter(self.sld_interval))
+            self.op3.camera_follow(0.5, 0, 0)
 
         self._th_walk = None
 
