@@ -5,8 +5,8 @@ from threading import Thread
 import pybullet as p
 
 import sys
-from op3 import OP3
-from wfunc import WFunc
+from core.op3 import OP3
+from walking.wfunc import WFunc
 
 
 class Walker:
@@ -27,10 +27,9 @@ class Walker:
         self.ready_pos.update({"r_sho_pitch": 0, "l_sho_pitch": 0,
                                "r_sho_roll": -1.0, "l_sho_roll": 1.0,
                                "r_el": 0.5, "l_el": -0.5})
-        if sys.platform == "win32":
-            self.sld_interval = p.addUserDebugParameter("step_interval", 0.001, 0.1, 0.01)
-        elif sys.platform == "linux":
-            self.sld_interval = p.addUserDebugParameter("step_interval", 0.001, 0.1, 0.01)
+        self.sld_interval = p.addUserDebugParameter("step_interval", 0.001, 0.01, 0.006)
+        self.save_button = p.addUserDebugParameter("save parameters", 1, -1, 1)
+
         self._th_walk = None
 
     def cmd_vel(self, vx, vy, vt):
@@ -87,7 +86,7 @@ class Walker:
                 i = 0
                 phrase = not phrase
             time.sleep(p.readUserDebugParameter(self.sld_interval))
-            self.op3.camera_follow(0.5, 0, 0)
+            self.op3.camera_follow(0.5)
 
         self._th_walk = None
 
@@ -137,7 +136,7 @@ def get_distance(anglesa, anglesb):
 
 if __name__ == "__main__":
 
-    op3 = OP3()
+    op3 = OP3(fallen_reset=True)
     walker = Walker(op3)
     time.sleep(1)
     walker.start()
