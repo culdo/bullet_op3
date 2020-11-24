@@ -1,6 +1,7 @@
 import time
 from threading import Thread
 import numpy as np
+np.set_printoptions(precision=2)
 
 import pybullet as p
 import pybullet_data
@@ -35,10 +36,11 @@ op3_joints = ['l_hip_yaw',
 
 
 class OP3:
-    def __init__(self, fallen_reset=False):
+    def __init__(self, fallen_reset=False, sim_speed=1.0):
         self.fallen_reset = fallen_reset
         self.physicsClient = p.connect(p.GUI)  # or p.DIRECT for non-graphical version
         # p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
+        self.sld_sim_speed = p.addUserDebugParameter("sim_speed", 1.0, 1000.0, sim_speed)
         self.bt_rst = p.addUserDebugParameter("reset OP3", 1, 0, 1)
         p.configureDebugVisualizer(p.COV_ENABLE_RGB_BUFFER_PREVIEW, 0)
         p.configureDebugVisualizer(p.COV_ENABLE_DEPTH_BUFFER_PREVIEW, 0)
@@ -49,7 +51,7 @@ class OP3:
         self.op3StartPos = [0, 0, 0.3]
         self.op3StartOrientation = p.getQuaternionFromEuler([0, 0, 0])
         self.planeId = p.loadURDF("plane.urdf")
-        self.robot = p.loadURDF("../../models/robotis_op3.urdf", self.op3StartPos, self.op3StartOrientation)
+        self.robot = p.loadURDF("../models/robotis_op3.urdf", self.op3StartPos, self.op3StartOrientation)
         self.numJoints = p.getNumJoints(self.robot)
         self.targetVel = 0
         self.maxForce = 100
@@ -58,11 +60,16 @@ class OP3:
         self.angles = None
         self.update_angle_th()
         self.check_reset_th()
-        # We go real-time simulation rather than call stepSimulation
-        p.setRealTimeSimulation(1)
+        # You can use real-time simulation rather than call stepSimulation
+        # p.setRealTimeSimulation(1)
+        self.run_sim_th()
         self._set_joint()
 
         self.joints = op3_joints
+
+    @property
+    def sim_speed(self):
+        return p.readUserDebugParameter(self.sld_sim_speed)
 
     def get_orientation(self):
         _, orientation = p.getBasePositionAndOrientation(self.robot)
@@ -106,18 +113,25 @@ class OP3:
         while True:
             t = time.time()
             if t > stop: break
-            ratio = (t - start) / delay
+            ratio = (t - start) / (delay / self.sim_speed)
             angles = interpolate(stop_angles, start_angles, ratio)
             self.set_angles(angles)
-            time.sleep(0.1)
+            time.sleep(0.1 / self.sim_speed)
+
+    def run_sim_th(self):
+        def _cb_sim():
+            while True:
+                p.stepSimulation()
+                time.sleep(1.0 / (240.0 * self.sim_speed))
+        Thread(target=_cb_sim).start()
 
     def check_reset_th(self):
         def _cb_reset():
-            self.prev_state = None
+            self.prev_state = 1.0
             while True:
                 curr_state = p.readUserDebugParameter(self.bt_rst)
                 if curr_state != self.prev_state or (self.fallen_reset and self.is_fallen()):
-                    self.reset()
+                    self.reset_and_start()
                     self.prev_state = curr_state
                 time.sleep(0.001)
 
@@ -149,7 +163,7 @@ class OP3:
             print(OP3Pos, OP3Orn)
             p.disconnect()
 
-    def reset(self):
+    def reset_and_start(self):
         p.resetBasePositionAndOrientation(self.robot, self.op3StartPos, self.op3StartOrientation)
 
 
