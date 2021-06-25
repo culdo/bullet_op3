@@ -58,6 +58,15 @@ class OP3Arm(OP3):
 
         Thread(target=_cb_save_data).start()
 
+    def run_predict(self):
+        answers = np.load("data/answers.npy")
+        for goal in answers:
+            for label, xyz_in_algo in goal:
+                goal_vector = label - p.getLinkState(self.robot, 15)[0]
+                self.set_angles({"l_sho_pitch": xyz_in_algo[0],
+                                 "l_sho_roll": xyz_in_algo[1],
+                                 "l_el": xyz_in_algo[2]})
+
 
 if __name__ == '__main__':
     op3 = OP3Arm()

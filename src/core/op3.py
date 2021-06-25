@@ -83,7 +83,7 @@ class OP3:
         _, orientation = p.getBasePositionAndOrientation(self.robot)
         return np.array(orientation)
 
-    def get_position(self):
+    def get_position(self, model=None):
         position, _ = p.getBasePositionAndOrientation(self.robot)
         return np.array(position)
 

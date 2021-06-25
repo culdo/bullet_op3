@@ -3,6 +3,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn import svm
 from sklearn.multioutput import MultiOutputRegressor
 import numpy as np
+
 data = np.load("data/arm_data.npy")
 y = data[:20, 0]
 X = data[:20, 1]
@@ -23,7 +24,8 @@ for i in range(20):
     rand = np.random.rand(3)
     if i in [1, 3, 10]:
         point_info = [(rand * goal_range_bound) + center_coord + origin_bias]
-        answers.append([svr.predict(point_info).flatten(),
-                        dtr.predict(point_info).flatten(),
-                        rfr.predict(point_info).flatten()])
+        answer = [svr.predict(point_info).flatten(),
+                  dtr.predict(point_info).flatten(),
+                  rfr.predict(point_info).flatten()]
+        answers.append([point_info, answer])
 np.save("data/answers.npy", answers)
