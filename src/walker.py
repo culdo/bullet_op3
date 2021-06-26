@@ -143,7 +143,7 @@ class Walker(OP3):
         angles = self.get_angles()
         return get_distance(self.ready_pos, angles)
 
-    def reset_and_start(self):
+    def reset(self):
         self.stop()
         p.resetBasePositionAndOrientation(self.robot, self.op3StartPos, self.op3StartOrientation)
         self.start()
@@ -172,7 +172,7 @@ if __name__ == "__main__":
 
     walker = Walker(fallen_reset=True)
     time.sleep(1)
-    walker.reset_and_start()
+    walker.reset()
 
     while True:
         time.sleep(1)

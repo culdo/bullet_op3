@@ -74,12 +74,10 @@ def play_action(self, page_num=1):
     page = x.pages[page_num]
     print("Page %s %s" % (page_num, cast(page.header.name, c_char_p).value))
     for j, step in enumerate(page.steps[:page.header.stepnum]):
-        print("Step %s pause: %s time: %s" % (j, step.pause, step.time))
         angles = []
         for k, joint_val in enumerate(step.position):
             if len(action_joints) + 1 > k > 0:
                 rad = cvt_4095_to_rad(joint_val)
-                print("Joint %s %s rad: %s" % (k, action_joints[k-1], rad))
                 angles.append(rad)
         angle_dict = dict(zip(action_joints, angles))
         self.set_angles(angle_dict)

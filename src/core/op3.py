@@ -1,7 +1,7 @@
 import time
 from threading import Thread
 import numpy as np
-from ..util import read_action_file
+from ..util import action_file_parser
 
 np.set_printoptions(precision=2)
 
@@ -15,7 +15,7 @@ if sys.platform == "win32":
     timeBeginPeriod = windll.winmm.timeBeginPeriod
     timeBeginPeriod(1)
 
-op3_joints = ['l_hip_yaw',
+op3_joints = ('l_hip_yaw',
               'l_hip_roll',
               'l_hip_pitch',
               'l_knee',
@@ -34,16 +34,14 @@ op3_joints = ['l_hip_yaw',
               'r_sho_roll',
               'r_el',
               'head_pan',
-              'head_tilt']
+              'head_tilt')
 
 
 class OP3:
-    play_action = read_action_file.play_action
+    play_action = action_file_parser.play_action
 
     def __init__(self, fallen_reset=False, sim_speed=1.0, model_file="../models/robotis_op3.urdf",
-                 op3StartOrientation=p.getQuaternionFromEuler([0, 0, 0])):
-        if "arm" in model_file:
-            op3_joints.insert(15, "l_ha")
+                 op3StartOrientation=p.getQuaternionFromEuler([0, 0, 0]), joints=op3_joints):
         self.model_file = model_file
         self.fallen_reset = fallen_reset
         self.physicsClient = p.connect(p.GUI)  # or p.DIRECT for non-graphical version
@@ -73,7 +71,7 @@ class OP3:
         self.run_sim_th()
         self.enable_joint()
 
-        self.joints = op3_joints
+        self.joints = joints
 
     @property
     def sim_speed(self):
@@ -83,9 +81,12 @@ class OP3:
         _, orientation = p.getBasePositionAndOrientation(self.robot)
         return np.array(orientation)
 
-    def get_position(self, model=None):
+    def get_position(self):
         position, _ = p.getBasePositionAndOrientation(self.robot)
         return np.array(position)
+
+    def get_joint_xyz(self, joint_name):
+        return p.getLinkState(self.robot, self.joints.index(joint_name))[0]
 
     def camera_follow(self, distance=1.0, pitch=-35.0, yaw=50.0):
         lookat = self.get_position() - [0, 0, 0.1]
@@ -107,12 +108,15 @@ class OP3:
         if self.angles is None: return None
         return dict(zip(self.joints, self.angles))
 
+    def get_angle(self, joint):
+        return self.get_angles()[joint]
+
     def set_angles(self, angles_info):
         for j, v in angles_info.items():
             if j not in self.joints:
                 AssertionError("Invalid joint name " + j)
                 continue
-            p.setJointMotorControl(self.robot, op3_joints.index(j), p.POSITION_CONTROL, v, self.maxForce)
+            p.setJointMotorControl(self.robot, self.joints.index(j), p.POSITION_CONTROL, v, self.maxForce)
 
     def set_angles_slow(self, stop_angles, delay=2):
         start_angles = self.get_angles()
@@ -140,7 +144,7 @@ class OP3:
             while True:
                 curr_state = p.readUserDebugParameter(self.bt_rst)
                 if curr_state != self.prev_state or (self.fallen_reset and self.is_fallen()):
-                    self.reset_and_start()
+                    self.reset()
                     self.prev_state = curr_state
                 time.sleep(0.001)
 
@@ -162,7 +166,7 @@ class OP3:
             print(p.getJointInfo(self.robot, joint))
             p.setJointMotorControl(self.robot, joint, p.POSITION_CONTROL, self.targetVel, self.maxForce)
 
-    def run(self):
+    def loop(self):
         try:
             while True:
                 # p.stepSimulation()
@@ -172,8 +176,9 @@ class OP3:
             print(OP3Pos, OP3Orn)
             p.disconnect()
 
-    def reset_and_start(self):
+    def reset(self):
         p.resetBasePositionAndOrientation(self.robot, self.op3StartPos, self.op3StartOrientation)
+        time.sleep(0.5)
 
 
 def interpolate(anglesa, anglesb, coefa):
@@ -186,4 +191,4 @@ def interpolate(anglesa, anglesb, coefa):
 
 if __name__ == '__main__':
     op3 = OP3()
-    op3.run()
+    op3.loop()
