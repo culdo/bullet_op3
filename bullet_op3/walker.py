@@ -4,8 +4,8 @@ from threading import Thread
 
 import pybullet as p
 
-from core.op3 import OP3
-from walking.wfunc import WFunc
+from .core.op3 import OP3
+from .walking.wfunc import WFunc
 
 
 class Walker(OP3):
@@ -166,13 +166,3 @@ def get_distance(anglesa, anglesb):
         d += abs(anglesb[j] - anglesa[j])
     d /= len(joints)
     return d
-
-
-if __name__ == "__main__":
-
-    walker = Walker(fallen_reset=True)
-    time.sleep(1)
-    walker.reset()
-
-    while True:
-        time.sleep(1)

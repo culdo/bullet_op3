@@ -2,7 +2,7 @@ import os
 import time
 from threading import Thread
 
-from src.core.op3 import OP3, p
+from bullet_op3.core.op3 import OP3, p
 import numpy as np
 
 op3_arm_joints = ('l_hip_yaw',
