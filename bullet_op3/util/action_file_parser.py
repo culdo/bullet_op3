@@ -1,6 +1,9 @@
+import os
 import time
 from ctypes import *
 from math import pi
+from .. import __file__
+module_path = os.path.dirname(__file__)
 
 action_joints = [
     'r_sho_pitch',
@@ -63,7 +66,7 @@ def cvt_4095_to_rad(x):
     return (x - 2048) * pi / 2048.0
 
 
-with open('data/motion_4095.bin', 'rb') as file:
+with open(os.path.join(module_path, 'data/motion_4095.bin'), 'rb') as file:
     result = []
     x = ActionFile()
     a = bytearray()

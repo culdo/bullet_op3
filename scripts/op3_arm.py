@@ -30,9 +30,9 @@ op3_arm_joints = ('l_hip_yaw',
 
 class OP3Arm(OP3):
     def __init__(self):
-        super().__init__(model_file="../models/robotis_op3_arm.urdf",
+        super().__init__(model_file="../bullet_op3/data/models/robotis_op3_arm.urdf",
                          op3StartOrientation=p.getQuaternionFromEuler([0, 0.1, 0]), joints=op3_arm_joints)
-        self.ball = p.loadURDF("../models/sphere.urdf", [0, 0, 1], self.op3StartOrientation)
+        self.ball = p.loadURDF("../bullet_op3/data/models/sphere.urdf", [0, 0, 1], self.op3StartOrientation)
         self.l_ha_pos = None
         self.l_sho_pitch = p.addUserDebugParameter("l_sho_pitch", -3.14, 3.14, 0)
         self.l_sho_roll = p.addUserDebugParameter("l_sho_roll", -3.14, 3.14, 0)

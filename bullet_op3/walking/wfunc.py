@@ -4,7 +4,7 @@ from threading import Thread
 
 import pybullet as p
 
-from walking.wj_func import WJFunc
+from .wj_func import WJFunc
 
 
 class WFunc:

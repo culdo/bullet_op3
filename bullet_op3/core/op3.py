@@ -8,6 +8,10 @@ np.set_printoptions(precision=2)
 import pybullet as p
 import pybullet_data
 import sys
+import os
+from .. import __file__
+
+module_path = os.path.dirname(__file__)
 
 if sys.platform == "win32":
     from ctypes import windll
@@ -40,7 +44,8 @@ op3_joints = ('l_hip_yaw',
 class OP3:
     play_action = action_file_parser.play_action
 
-    def __init__(self, fallen_reset=False, sim_speed=1.0, model_file="../models/robotis_op3.urdf",
+    def __init__(self, fallen_reset=False, sim_speed=1.0,
+                 model_file=os.path.join(module_path, "data/models/robotis_op3.urdf"),
                  op3StartOrientation=p.getQuaternionFromEuler([0, 0, 0]), joints=op3_joints):
         self.model_file = model_file
         self.fallen_reset = fallen_reset

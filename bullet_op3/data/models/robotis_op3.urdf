@@ -351,7 +351,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/body.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/body.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -360,7 +360,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/body.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/body.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -397,7 +397,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ll1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ll1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -406,7 +406,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ll1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ll1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -442,7 +442,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ll2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ll2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Black">
         <color rgba="0.00 0.00 0.00 1.0"/>
@@ -451,7 +451,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ll2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ll2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Black">
         <color rgba="0.00 0.00 0.00 1.0"/>
@@ -487,7 +487,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ll3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ll3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -496,7 +496,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ll3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ll3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -532,7 +532,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ll4.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ll4.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -541,7 +541,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ll4.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ll4.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -577,7 +577,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ll5.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ll5.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Black">
         <color rgba="0.00 0.00 0.00 1.0"/>
@@ -586,7 +586,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ll5.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ll5.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Black">
         <color rgba="0.00 0.00 0.00 1.0"/>
@@ -622,7 +622,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ll6.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ll6.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -631,7 +631,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ll6.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ll6.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -667,7 +667,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/rl1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/rl1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -676,7 +676,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/rl1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/rl1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -712,7 +712,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/rl2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/rl2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Black">
         <color rgba="0.00 0.00 0.00 1.0"/>
@@ -721,7 +721,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/rl2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/rl2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Black">
         <color rgba="0.00 0.00 0.00 1.0"/>
@@ -757,7 +757,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/rl3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/rl3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -766,7 +766,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/rl3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/rl3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -802,7 +802,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/rl4.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/rl4.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -811,7 +811,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/rl4.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/rl4.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -847,7 +847,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/rl5.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/rl5.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Black">
         <color rgba="0.00 0.00 0.00 1.0"/>
@@ -856,7 +856,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/rl5.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/rl5.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Black">
         <color rgba="0.00 0.00 0.00 1.0"/>
@@ -892,7 +892,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/rl6.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/rl6.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -901,7 +901,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/rl6.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/rl6.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -937,7 +937,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/la1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/la1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -946,7 +946,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/la1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/la1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -982,7 +982,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/la2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/la2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -991,7 +991,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/la2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/la2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -1027,7 +1027,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/la3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/la3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -1036,7 +1036,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/la3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/la3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -1072,7 +1072,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ra1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ra1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -1081,7 +1081,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ra1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ra1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -1117,7 +1117,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ra2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ra2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -1126,7 +1126,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ra2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ra2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -1162,7 +1162,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ra3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ra3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -1171,7 +1171,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/ra3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/ra3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -1207,7 +1207,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/h1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/h1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -1216,7 +1216,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/h1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/h1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -1252,7 +1252,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/h2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/h2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
@@ -1261,7 +1261,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://op3_description/meshes/h2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="../meshes/h2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Grey">
         <color rgba="0.60 0.60 0.60 1.0"/>
