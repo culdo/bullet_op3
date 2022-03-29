@@ -5,7 +5,7 @@ Use Pybullet to replace Gazebo and Webots simulator.
 `pip install -e .`
 
 ## Start OP3 Walking
-<img src="docs/walker_demo.gif" width="80%"/>
+<img src="https://user-images.githubusercontent.com/26900749/160604386-675bb26d-4068-4686-b459-09895aa9ad4d.gif" width="80%"/>
 
 * Run `python scripts/start_walking.py`
 
@@ -13,4 +13,4 @@ Use Pybullet to replace Gazebo and Webots simulator.
 * Run `python scripts/op3_arm.py`
 
 ## Just for fun
-<img src="docs/fun_demo.gif" width="80%"/>
+<img src="https://user-images.githubusercontent.com/26900749/160604392-8f71ccba-a285-4395-96ba-14ccfe821f68.gif" width="80%"/>
